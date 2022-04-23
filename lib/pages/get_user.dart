@@ -17,60 +17,73 @@ class _GetUserState extends State<GetUser> {
 
   @override
   Widget build(BuildContext context) {
+    User? user;
     return Container(
       color: Colors.green.shade50,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Row(
+        child: Column(
           children: [
-            Flexible(
-              child: TextField(
-                controller: _idController,
-                decoration: InputDecoration(hintText: 'Enter ID'),
-              ),
-            ),
-            SizedBox(width: 16.0),
-            _isFetching? CircularProgressIndicator() : ElevatedButton(onPressed: () async{
-              setState(() {
-                _isFetching = true;
-              });
+            Row(
+              children: [
+                Flexible(
+                  child: TextField(
+                    controller: _idController,
+                    decoration: InputDecoration(hintText: 'Enter ID'),
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                SizedBox(width: 16.0),
+                _isFetching? CircularProgressIndicator() : ElevatedButton(onPressed: () async{
+                  setState(() {
+                    _isFetching = true;
+                  });
 
-              User? user = await _userService.getUser(
-                id: _idController.text,
-              );
-              if (user != null) {
-                showDialog(
-                  context: context,
-                  builder: (context) => Dialog(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.network(user.data.avatar),
-                            Text('ID: ${user.data.id}'),
-                            Text(
-                              'Name: ${user.data.firstName} ${user.data.lastName}',
+                  user = await _userService.getUser(
+                    id: _idController.text,
+                  );
+                  if (user != null) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // Image.network(user?.data.avatar),
+                                Text('ID: ${user?.data.id}'),
+                                Text(
+                                  'Name: ${user?.data.firstName} ${user?.data.lastName}',
+                                ),
+                                Text('Email: ${user?.data.email}'),
+                              ],
                             ),
-                            Text('Email: ${user.data.email}'),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                );
-              }
+                    );
+                  }
 
-              setState(() {
-                _isFetching = false;
-              });
-            }, child: Text('Get'))
+                  setState(() {
+                    _isFetching = false;
+                  });
+                }, child: Text('Get')),
+
+
+              ],
+            ),
+            Text('ID: ${user?.data.id}'),
+            Text(
+              'Name: ${user?.data.firstName} ${user?.data.lastName}',
+            ),
+            Text('Email: ${user?.data.email}'),
           ],
         ),
       ),
