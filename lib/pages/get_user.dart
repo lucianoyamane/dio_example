@@ -1,6 +1,10 @@
+import 'package:dio_example/models/data.dart';
 import 'package:dio_example/models/user.dart';
+import 'package:dio_example/pages/bloc/user_data_bloc.dart';
+import 'package:dio_example/pages/bloc/user_data_state.dart';
 import 'package:dio_example/service/user_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GetUser extends StatefulWidget {
     const GetUser({Key? key}) : super(key: key);
@@ -10,14 +14,11 @@ class GetUser extends StatefulWidget {
 }
 
 class _GetUserState extends State<GetUser> {
-  final UserService _userService = UserService();
   final TextEditingController _idController = TextEditingController();
-
-  bool _isFetching = false;
+  final UserDataBloc _userDataBloc = UserDataBloc();
 
   @override
   Widget build(BuildContext context) {
-    User? user;
     return Container(
       color: Colors.green.shade50,
       child: Padding(
@@ -34,56 +35,45 @@ class _GetUserState extends State<GetUser> {
                   ),
                 ),
                 SizedBox(width: 16.0),
-                _isFetching? CircularProgressIndicator() : ElevatedButton(onPressed: () async{
-                  setState(() {
-                    _isFetching = true;
-                  });
+                BlocProvider(create: (context) => _userDataBloc,
+                  child: BlocBuilder<UserDataBloc, UserDataState>(
+                    builder:(context, state) {
+                      if (state.getState() == 'loading') {
+                        return CircularProgressIndicator();
+                      }
+                      return ElevatedButton(onPressed: ()  async{
+                        BlocProvider.of<UserDataBloc>(context).add(GetUserDataEvent(_idController.text));
+                      }, child: Text('Get'));
 
-                  user = await _userService.getUser(
-                    id: _idController.text,
-                  );
-                  if (user != null) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                // Image.network(user?.data.avatar),
-                                Text('ID: ${user?.data.id}'),
-                                Text(
-                                  'Name: ${user?.data.firstName} ${user?.data.lastName}',
-                                ),
-                                Text('Email: ${user?.data.email}'),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-
-                  setState(() {
-                    _isFetching = false;
-                  });
-                }, child: Text('Get')),
-
+                    }) ,
+                  ) ,
 
               ],
             ),
-            Text('ID: ${user?.data.id}'),
-            Text(
-              'Name: ${user?.data.firstName} ${user?.data.lastName}',
-            ),
-            Text('Email: ${user?.data.email}'),
+            BlocProvider(create: (context) => _userDataBloc,
+              child: BlocBuilder<UserDataBloc, UserDataState>(
+                  builder:(context, state) {
+                    if (state.getState() == 'loaded') {
+                      UserDataLoaded loaded = state as UserDataLoaded;
+                      Data data = loaded.data;
+                      return  Column(children: [
+                          Text('ID: ${data.id}'),
+                          Text(
+                            'Name: ${data.firstName} ${data.lastName}',
+                          ),
+                          Text('Email: ${data.email}'),
+                          Image.network(data.avatar),
+                        ],
+                      );
+                    }
+                    return Text('sem dados');
+
+                  }) ,
+            )
+            ,
+
+
+            // Image.network(user?.data.avatar),
           ],
         ),
       ),
@@ -91,3 +81,32 @@ class _GetUserState extends State<GetUser> {
   }
 
 }
+
+// if (user != null) {
+// showDialog(
+// context: context,
+// builder: (context) => Dialog(
+// child: Container(
+// decoration: BoxDecoration(
+// color: Colors.white,
+// borderRadius: BorderRadius.circular(20),
+// ),
+// child: Padding(
+// padding: const EdgeInsets.all(8.0),
+// child: Column(
+// crossAxisAlignment: CrossAxisAlignment.start,
+// mainAxisSize: MainAxisSize.min,
+// children: [
+// // Image.network(user?.data.avatar),
+// Text('ID: ${user?.data.id}'),
+// Text(
+// 'Name: ${user?.data.firstName} ${user?.data.lastName}',
+// ),
+// Text('Email: ${user?.data.email}'),
+// ],
+// ),
+// ),
+// ),
+// ),
+// );
+// }

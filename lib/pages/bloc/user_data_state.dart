@@ -1,9 +1,26 @@
 import 'package:dio_example/models/data.dart';
 
-class UserDataState {
+abstract class UserDataState {
+  final String state;
 
+  UserDataState(this.state);
+
+  getState() {
+    return state;
+  }
+}
+
+class UserDataInitial extends UserDataState {
+  UserDataInitial() : super('initial');
+
+}
+
+class UserDataLoading extends UserDataState {
+  UserDataLoading() : super('loading');
+}
+
+class UserDataLoaded extends UserDataState{
   Data data;
 
-  UserDataState(this.data);
-
+  UserDataLoaded(this.data) : super('loaded');
 }
