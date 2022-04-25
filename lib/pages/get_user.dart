@@ -68,44 +68,10 @@ class _GetUserState extends State<GetUser> {
                     return const Text('sem dados');
 
                   }) ,
-            )
-            ,
-
-
-            // Image.network(user?.data.avatar),
+            ),
           ],
         ),
       ),
     );
   }
-
 }
-
-// if (user != null) {
-// showDialog(
-// context: context,
-// builder: (context) => Dialog(
-// child: Container(
-// decoration: BoxDecoration(
-// color: Colors.white,
-// borderRadius: BorderRadius.circular(20),
-// ),
-// child: Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Column(
-// crossAxisAlignment: CrossAxisAlignment.start,
-// mainAxisSize: MainAxisSize.min,
-// children: [
-// // Image.network(user?.data.avatar),
-// Text('ID: ${user?.data.id}'),
-// Text(
-// 'Name: ${user?.data.firstName} ${user?.data.lastName}',
-// ),
-// Text('Email: ${user?.data.email}'),
-// ],
-// ),
-// ),
-// ),
-// ),
-// );
-// }
