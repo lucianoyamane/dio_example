@@ -1,6 +1,5 @@
 import 'package:dio_example/api/dio_api.dart';
 import 'package:dio_example/models/user.dart';
-import 'package:dio_example/models/user_info.dart';
 
 class UserService {
   static UserService? _instance;
@@ -13,11 +12,5 @@ class UserService {
     var response = await Api().dio.get('/users/$id');
 
     return User.fromJson(response.data);
-  }
-
-  Future<UserInfo> createUser({required UserInfo userInfo}) async {
-    var response = await Api().dio.post('/users', data: userInfo.toJson());
-
-    return UserInfo.fromJson(response.data);
   }
 }

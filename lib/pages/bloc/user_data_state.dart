@@ -20,7 +20,7 @@ class UserDataLoading extends UserDataState {
 }
 
 class UserDataLoaded extends UserDataState{
-  Data data;
+  Data? data;
 
   UserDataLoaded(this.data) : super('loaded');
 }

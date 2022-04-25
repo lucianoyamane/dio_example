@@ -53,14 +53,15 @@ class _GetUserState extends State<GetUser> {
                   builder:(context, state) {
                     if (state.getState() == 'loaded') {
                       UserDataLoaded loaded = state as UserDataLoaded;
-                      Data data = loaded.data;
+                      Data? data = loaded.data;
+                      String? imgURL = data?.avatar;
                       return  Column(children: [
-                          Text('ID: ${data.id}'),
+                          Text('ID: ${data?.id}'),
                           Text(
-                            'Name: ${data.firstName} ${data.lastName}',
+                            'Name: ${data?.firstName} ${data?.lastName}',
                           ),
-                          Text('Email: ${data.email}'),
-                          Image.network(data.avatar),
+                          Text('Email: ${data?.email}'),
+                          Image.network(imgURL!),
                         ],
                       );
                     }
