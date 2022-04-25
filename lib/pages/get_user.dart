@@ -1,8 +1,6 @@
 import 'package:dio_example/models/data.dart';
-import 'package:dio_example/models/user.dart';
 import 'package:dio_example/pages/bloc/user_data_bloc.dart';
 import 'package:dio_example/pages/bloc/user_data_state.dart';
-import 'package:dio_example/service/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,20 +28,20 @@ class _GetUserState extends State<GetUser> {
                 Flexible(
                   child: TextField(
                     controller: _idController,
-                    decoration: InputDecoration(hintText: 'Enter ID'),
+                    decoration: const InputDecoration(hintText: 'Enter ID'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                SizedBox(width: 16.0),
+                const SizedBox(width: 16.0),
                 BlocProvider(create: (context) => _userDataBloc,
                   child: BlocBuilder<UserDataBloc, UserDataState>(
                     builder:(context, state) {
                       if (state.getState() == 'loading') {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
                       return ElevatedButton(onPressed: ()  async{
                         BlocProvider.of<UserDataBloc>(context).add(GetUserDataEvent(_idController.text));
-                      }, child: Text('Get'));
+                      }, child: const Text('Get'));
 
                     }) ,
                   ) ,
@@ -66,7 +64,7 @@ class _GetUserState extends State<GetUser> {
                         ],
                       );
                     }
-                    return Text('sem dados');
+                    return const Text('sem dados');
 
                   }) ,
             )
