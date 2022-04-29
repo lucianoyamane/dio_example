@@ -1,4 +1,4 @@
-import 'package:dio_example/api/dio_api.dart';
+import 'package:dio_example/api/http_api.dart';
 import 'package:dio_example/models/user.dart';
 
 class UserService {
