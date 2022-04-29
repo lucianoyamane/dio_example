@@ -9,7 +9,7 @@ class UserService {
   UserService._();
 
   Future<User> getUser({required String id}) async {
-    var response = await Api().dio.get('/users/$id');
+    var response = await Api().get('/users/$id');
 
     return User.fromJson(response.data);
   }
