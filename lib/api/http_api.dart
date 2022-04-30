@@ -2,8 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_example/api/logging.dart';
 
 class Api {
-  final dio = createDio();
-  final tokenDio = Dio(BaseOptions(baseUrl: 'https://reqres.in/api'));
+  final _dio = createDio();
 
   Api._internal();
 
@@ -19,5 +18,9 @@ class Api {
       sendTimeout: 15000,
     ))..interceptors.add(Logging());
     return dio;
+  }
+
+  Future get(String path) {
+    return _dio.get(path);
   }
 }
