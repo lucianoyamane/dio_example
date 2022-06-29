@@ -12,5 +12,6 @@ Api: https://reqres.in/api;
 
 > ## Dependences:
 
+    flutter stable 3.0.3
     dio: ^4.0.6
     flutter_bloc: ^8.0.1
